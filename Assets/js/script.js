@@ -52,13 +52,12 @@ $(function () {
     }
   }
 
-
-  // $(".saveBtn").each(function (index) {
-  //   $(this).on('click', function () {
-  //     var calEventName = $.trim($('textarea').eq(index).val());
-  //     var scheduledHour = $.trim($(this).parent().closest('div').text());
-  //     calendarEvent.push({ index: index, hour: scheduledHour, event: calEventName });
-  //     console.log(calendarEvent);
-  //   });
-  // });
+  $(".saveBtn").each(function (index) {
+    $(this).on('click', function () {
+      var calEventName = $.trim($('textarea').eq(index).val());
+      var scheduledHour = $.trim($(this).parent().closest('div').text());
+      calendarEvent.push({ index: index, hour: scheduledHour, event: calEventName });
+      console.log(calendarEvent);
+    });
+  });
 });
