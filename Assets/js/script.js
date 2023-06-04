@@ -79,8 +79,21 @@ $(function () {
           calendarList.push(event);
         }
       });
+      //filtering calendarList down to contain only unique objects, otherwise
+      //the list contained duplicates if there was more than one event written upon button click
+      var uniqueList = [];
+      calendarList.filter(function(item){
+        var i = uniqueList.findIndex(x => (x.index == item.index && x.hour == item.hour && x.event == item.event));
+        if(i <= -1){
+          uniqueList.push(item);
+        }    
+      });
+
+      localStorage.setItem('calEvents', JSON.stringify(uniqueList));
     }
-    localStorage.setItem('calEvents', JSON.stringify(calendarList));
+    else{
+      localStorage.setItem('calEvents', JSON.stringify(calendarList));
+    }
   });
 });
 
