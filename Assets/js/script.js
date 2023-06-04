@@ -3,12 +3,13 @@ var saveButton = $('.saveBtn');
 var currentDay = $('#currentDay');
 var calendar = $('.calendar');
 
-var calendarEvent = [{
-  index: Number,
-  hour: String,
-  event: String
-}];
+function CalendarEvent(index,hour,event) {
+  this.index = index;
+  this.hour = hour;
+  this.event = event;
+};
 
+var calendarList = [];
 var today = dayjs();
 var currentHour = today.format('H');
 var amPm = "AM";
@@ -49,20 +50,23 @@ $(function () {
     }
   }
 
-  $(".saveBtn").each(function (index) {
-    $(this).on('click', function () {
-      var calEventName = $.trim($('textarea').eq(index).val());
-      var scheduledHour = $.trim($(this).parent().closest('div').text());
-      calendarEvent.push({ index: index, hour: scheduledHour, event: calEventName });
-      var savedEvents = localStorage.getItem('calEvents');
-      if (savedEvents != null) {
-        var savedEventsArray = JSON.parse(savedEvents);
+  $(".saveBtn").on('click', function (event){
+    var calEventName = $(".saveBtn",this).prevObject.parent().children().eq(1).val();
+    var scheduledHour = $(".saveBtn",this).prevObject.parent().children().eq(0).text();
+    var indexSaved = $(".saveBtn",this).prevObject.parent()[0].id;
+    var savedEvent = new CalendarEvent(indexSaved,scheduledHour,calEventName);
+    calendarList.push(savedEvent);
+    var savedEvents = localStorage.getItem('calEvents');
+    if (savedEvents != null) {
+      var savedEventsArray = JSON.parse(savedEvents);
         savedEventsArray.forEach(event => {
-          calendarEvent.push(event);
+          if(event.index != null)
+          {
+            calendarList.push(event);
+          }
         });
-      }
-      localStorage.setItem('calEvents', JSON.stringify(calendarEvent));
-    });
+    }
+    localStorage.setItem('calEvents', JSON.stringify(calendarList));
   });
 });
 
